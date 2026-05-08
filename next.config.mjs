@@ -1,15 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverExternalPackages: ['@playwright/test', 'playwright-core'],
+  },
   webpack: (config) => {
-    config.module.rules.push({
-      test: /\.(ttf|html)$/i,
-      type: 'asset/resource'
+    config.externals.push({
+      'utf-8-validate': 'commonjs utf-8-validate',
+      'bufferutil': 'commonjs bufferutil',
     });
     return config;
   },
-  experimental: {
-    serverMinification: false, // the server minification unfortunately breaks the selector class names
-  },
-};  
+};
 
-export default nextConfig;
+module.exports = nextConfig;
