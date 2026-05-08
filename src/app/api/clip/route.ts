@@ -1,8 +1,8 @@
+export const dynamic = 'force-dynamic';
 import { NextResponse, NextRequest } from "next/server";
 import { sunoApi } from "@/lib/SunoApi";
 import { corsHeaders } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   if (req.method === 'GET') {
