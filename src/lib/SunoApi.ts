@@ -509,7 +509,10 @@ class SunoApi {
     make_instrumental: boolean = false,
     model?: string,
     wait_audio: boolean = false,
-    negative_tags?: string
+    negative_tags?: string,
+    control_sliders?: { weirdness_constraint?: number; style_weight?: number; audio_weight?: number },
+    vocal_gender?: string,
+    persona_id?: string
   ): Promise<AudioInfo[]> {
     const startTime = Date.now();
     const audios = await this.generateSongs(
@@ -520,7 +523,13 @@ class SunoApi {
       make_instrumental,
       model,
       wait_audio,
-      negative_tags
+      negative_tags,
+      undefined,    // task
+      undefined,    // continue_clip_id
+      undefined,    // continue_at
+      control_sliders,
+      vocal_gender,
+      persona_id
     );
     const costTime = Date.now() - startTime;
     logger.info(
@@ -555,7 +564,10 @@ class SunoApi {
     negative_tags?: string,
     task?: string,
     continue_clip_id?: string,
-    continue_at?: number
+    continue_at?: number,
+    control_sliders?: { weirdness_constraint?: number; style_weight?: number; audio_weight?: number },
+    vocal_gender?: string,
+    persona_id?: string
   ): Promise<AudioInfo[]> {
     await this.keepAlive();
     const payload: any = {
@@ -575,6 +587,14 @@ class SunoApi {
       payload.prompt = prompt;
     } else {
       payload.gpt_description_prompt = prompt;
+    }
+    if (persona_id) {
+      payload.persona_id = persona_id;
+    }
+    if (control_sliders || vocal_gender) {
+      payload.metadata = {};
+      if (control_sliders) payload.metadata.control_sliders = control_sliders;
+      if (vocal_gender) payload.metadata.vocal_gender = vocal_gender;
     }
     logger.info(
       'generateSongs payload:\n' +
