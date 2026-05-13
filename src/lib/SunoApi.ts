@@ -326,7 +326,7 @@ class SunoApi {
       // await this.click(page, { x: 318, y: 13 });
     } catch(e) {}
 
-    const textarea = page.locator('.custom-textarea');
+    const textarea = page.locator('textarea[placeholder="Write some lyrics or leave blank for instrumental"]');
     await this.click(textarea);
     await textarea.pressSequentially('Lorem ipsum', { delay: 80 });
 
